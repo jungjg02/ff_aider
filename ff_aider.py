@@ -345,7 +345,7 @@ class AgentInitUbuntu(AgentInitBase):
         # 4. Commands of installing required plugins
         if require_plugins:
             for plugin in require_plugins.keys():
-                command = f'git clone {self.config.dependencies.get(plugin, {"repo": "NO INFO."}).get("repo")} {self.plugins_dir}/{plugin}'
+                command = f'git clone {self.config.init.dependencies.get(plugin, {"repo": "NO INFO."}).get("repo")} {self.plugins_dir}/{plugin}'
                 executable_commands.append(command)
 
         for command in executable_commands:
