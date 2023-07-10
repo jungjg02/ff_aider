@@ -1,0 +1,167 @@
+# 이 파일을 ff_aider.yaml로 이름을 변경한 후
+# ff_aider.py 와 동일한 폴더에 저장해 주세요.
+
+# 로그 레벨, LOAD로 실행될 경우 FF의 로그 레벨을 따름
+log:
+  level: 'DEBUG'
+
+# FF config.yaml 경로
+ff_config: '/data/config.yaml'
+
+rclone:
+  # Rclone Remote Control 주소
+  # 형식: http://{address}:{port}
+  rc_addr: 'http://172.17.0.1:5572'
+
+  # Rclone Remote Control 인증 정보 (필요시 입력)
+  rc_user: ''
+  rc_pass: ''
+
+  # 로컬 경로를 GDS 경로로 변환하기 위한 변환 규칙
+  # '찾을 문자': '변경할 문자'
+  # ex) '/mnt/gds': '' == /mnt/gds/VOD/1.방송중/예능/... -> /VOD/1.방송중/예능/...
+  rc_mapping:
+    '/mnt/gds': ''
+    '/변경할/경로': '/변경될/경로/'
+
+plexmate:
+  # SCANNING 상태의 항목이 max_scan_time 시간(분)을 초과할 경우 스캔 실패로 간주하여 스캔 목록에서 제외 처리
+  max_scan_time: 10 # 분
+
+  # FINISH_TIMEOVER 상태의 항목 id 번호가 timeover_range 범위 안에 있을 경우 해당 항목을 다시 READY로 변경
+  # ex) '100~110' -> 100, 101, 102 ... 107, 108, 109
+  timeover_range: '1~1'
+
+init:
+  # 스크립트 내 명령어 실행 허용 여부
+  # 어떤 명령어가 실행되는지 로그를 확인한 후 안전하다고 생각되면 True
+  execute_commands: False
+
+  # init 일 경우 실행되는 명령어
+  commands:
+    - 'apt-get update'
+
+  # commands에서 명령어 실행시 최대 대기 시간(초)
+  timeout: 100 # 초
+
+  # 의존성 체크
+  # 플러그인:
+  #   repo: '플러그인 저장소'
+  #   plugins: [필요한 플러그인1, 필요한 플러그인2, ...]
+  #   packages: [필요한 프로그램1, 필요한 프로그램2, ...]
+  #   commands: [필요한 명령어1, 필요한 명령어2, ...]
+  dependencies:
+    sjva:
+      repo: 'https://github.com/soju6jan/sjva'
+    klive_plus:
+      repo: 'https://github.com/soju6jan/klive_plus'
+      plugins:
+        - sjva
+    wv_tool:
+      repo: 'https://github.com/soju6jan/wv_tool'
+      plugins:
+        - sjva
+      packages:
+        - aria2
+        - ffmpeg
+        - mkvtoolnix
+    wavve:
+      repo: 'https://github.com/soju6jan/wavve'
+      plugins:
+        - sjva
+        - ffmpeg
+        - wv_tool
+        - support_site
+    kakaotv:
+      repo: 'https://github.com/soju6jan/kakaotv'
+      plugins:
+        - sjva
+    cppl:
+      repo: 'https://github.com/soju6jan/cppl'
+      plugins:
+        - sjva
+        - support_site
+        - wv_tool
+    bot_downloader:
+      repo: 'https://github.com/soju6jan/bot_downloader'
+      plugins:
+        - sjva
+    gds_tool:
+      repo: 'https://github.com/soju6jan/gds_tool'
+      plugins:
+        - sjva
+    make_yaml:
+      repo: 'https://github.com/kihyyo/make_yaml'
+      plugins:
+        - sjva
+        - support_site
+    flaskfilemanager:
+      repo: 'https://github.com/flaskfarm/flaskfilemanager'
+    terminal:
+      repo: 'https://github.com/flaskfarm/terminal'
+    ffmpeg:
+      repo: 'https://github.com/flaskfarm/ffmpeg'
+      packages:
+        - ffmpeg
+    number_baseball:
+      repo: 'https://github.com/flaskfarm/number_baseball'
+    trans:
+      repo: 'https://github.com/flaskfarm/trans'
+    static_host:
+      repo: 'https://github.com/by275/static_host'
+    rclone:
+      repo: 'https://github.com/flaskfarm/rclone'
+      plugins:
+        - sjva
+        - support_site
+        - wv_tool
+      packages:
+        - fuse3
+        - unzip
+      commands:
+        - 'curl -fsSL "https://raw.githubusercontent.com/wiserain/rclone/mod/install.sh" | bash'
+    support_site:
+      repo: 'https://github.com/flaskfarm/support_site'
+    metadata:
+      repo: 'https://github.com/flaskfarm/metadata'
+      plugins:
+        - support_site
+    discord_bot:
+      repo: 'https://github.com/flaskfarm/discord_bot'
+    libgdrive:
+      repo: 'https://github.com/byorial/libgdrive'
+    fp_ktv:
+      repo: 'https://github.com/flaskfarm/fp_ktv'
+    plex_mate:
+      repo: 'https://github.com/flaskfarm/plex_mate'
+    vnStat:
+      repo: 'https://github.com/by275/vnStat'
+    torrent_info:
+      repo: 'https://github.com/by275/torrent_info'
+      commands:
+        - 'pip install sqlitedict'
+    tving_search:
+      repo: 'https://github.com/by275/tving_search'
+    subtitle_tool:
+      repo: 'https://github.com/flaskfarm/subtitle_tool'
+    fp_movie:
+      repo: 'https://github.com/flaskfarm/fp_movie'
+      plugins:
+        - metadata
+        - support_site
+        - ffmpeg
+        - subtitle_tool
+    hotdeal_alarm:
+      repo: 'https://github.com/dbswnschl/hotdeal_alarm'
+    lotto:
+      repo: 'https://github.com/hudulgi/lotto'
+    musicProc2:
+      repo: 'https://github.com/dyllisLev/musicProc2'
+    sporki:
+      repo: 'https://github.com/105PM/sporki'
+    gugutv:
+      repo: 'https://github.com/ssagajikorea/gugutv'
+    narrtv:
+      repo: 'https://github.com/ssagajikorea/narrtv'
+    cooltv:
+      repo: 'https://github.com/ssagajikorea/cooltv'
